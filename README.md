@@ -14,23 +14,23 @@ B = Brush (Power to Clean 0 - 5)
 
 D = Direction 
    
-0 = North
+   0 = North
 
-1 = North East
+   1 = North East
 
-2 = East
+   2 = East
 
-3 = South East
+   3 = South East
 
-4 = South
+   4 = South
 
-5 = South West
+   5 = South West
 
-6 = West
+   6 = West
 
-7 = North West
+   7 = North West
 
-8 = Stay Still
+   8 = Stay Still
 
 ## Developer
 
