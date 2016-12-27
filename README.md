@@ -7,18 +7,29 @@ This project is about making the robot to clean the floor tiles. First of all, t
 State of ROBOT = { P , C , B , D }
     
 P = Power (0 = Off, 1 = Stand By, 2 = On)
+
 C = Camera (0 = Off, 1 = On)
+
 B = Brush (Power to Clean 0 - 5)
+
 D = Direction 
    
 0 = North
+
 1 = North East
+
 2 = East
+
 3 = South East
+
 4 = South
+
 5 = South West
+
 6 = West
+
 7 = North West
+
 8 = Stay Still
 
 ## Developer
