@@ -1,0 +1,117 @@
+---------------------------------------------ROBOT CLEANER ALGORITHM---------------------------------------------
+                
+                                             By Supakrit Paoliwat
+                                                  5730593821 
+
+******************************************************************************************************************
+
+State  of ROBOT = { P , C , B , D }
+
+    P = Power (0 = Off, 1 = Stand By, 2 = On)
+    C = Camera (0 = Off, 1 = On)
+    B = Brush (Power to Clean 0 - 5)
+    D = Direction 
+
+                  North             0 = North
+                7   0   1           1 = North East
+           West 6   8   2 East      2 = East
+                5   4   3           3 = South East
+                   West             4 = South
+                                    5 = South West
+                                    6 = West
+                                    7 = North West
+                                    8 = Stay Still
+
+******************************************************************************************************************
+
+Start State :   {0 , 0 , 0 , 8} -> Power Off
+                {1 , 0 , 0 , 8} -> Stand By
+                {2 , 0 , 0 , 8} -> Power On
+                {2 , 1 , 0 , 8} -> Camera On
+                {2 , 1 , 3 , 8} -> Brush On
+
+        Use QUEUE to store Robot state -> First In First Out
+
+******************************************************************************************************************
+
+Algorithm
+
+    Use Stack (First In Last Out and Depth First Search to find next move for the Robot
+
+        Structure of Robot Class is :
+
+            Robot(Power, Camera, Brush, Direction, NextPos(x,y), CurrentPos(x,y))
+
+        First create Start State to Generate Robot By initial Position -> (15, 5) 
+            and not move -> <1,0,0,0> which is 8 in the direction
+
+        push to Stack
+
+        but we need to push to Stack from bottom to start
+        **
+         //Start  Robot(0, 0, 0, <1,0,0,0>, <15,5>, <15,5>); -> Power Off
+                  Robot(1, 0, 0, <1,0,0,0>, <15,5>, <15,5>); -> Stand By
+                  Robot(2, 0, 0, <1,0,0,0>, <15,5>, <15,5>); -> Power On
+                  Robot(2, 1, 0, <1,0,0,0>, <15,5>, <15,5>); -> Camera On
+        //Bottom  Robot(2, 1, 3, <1,0,0,0>, <15,5>, <15,5>); -> Brush set to 3
+        
+            while(Stack!=empty())
+                
+                pop Robot from Stack -> To get the Robot
+
+                push (Robot.Power, Robot.Camera, Robot.Brush, Robot.Direction) to QUEUE -> to tell the robot what to do by this state
+                
+                check if Camera is On
+                
+                    Clean Dirt at Current Position by Brush
+
+                if not Stuck -> if robot can move in every Direction
+
+                    push Robot to Stack -> Push From Direction 0 to 7 So the Robot will move to Direction 7 first
+                        
+                        if canMove in Direction -> Check First if it Can Move or not
+
+                            Robot(2, 1, brush, Direction, NewNextPos, NewCurrentPos); 
+
+                    Trick (1)  -> Use another Stack to collect NextPos everytime robot moves
+
+                    push NextPos to Stack 2 -> so we can walk back till we want                        
+                
+                else -> Robot can't move in any Direction so **BACKTRACKING** is needed
+
+                    pop BackPos from Stack 2 to go to Position before
+                    
+                    push  Robot that NextPos is BackPos to Stack
+                        -> Robot will walk back until it can move to another Direction again
+
+        **
+
+        So if we get to the End Stat -> our goal is every floor is cleaned
+        
+        End State -> Don't forget to push from bottom to start
+
+        push to Stack
+
+        //Start   Robot(2, 1, 0, Direction, NextPos,  CurrentPos); -> Brush set to 0
+                  Robot(2, 0, 0, Direction, NextPos,  CurrentPos); -> Camera Off
+                  Robot(1, 0, 0, Direction, NextPos,  CurrentPos); -> Stand By
+        //Bottom  Robot(0, 0, 0, Direction, NextPos,  CurrentPos); -> Power Off
+
+******************************************************************************************************************
+
+        We also have another 2 Dimensional Matrix to save each position robot moves
+            -> Never Walked Through (1) 
+            -> Walked Through or Obstacles (0)
+            So if zero is 400, the robot moves through the map
+        
+        Trick (2) is to reset this 2D Matrix  to initial state everytime the robot moves through the map
+        
+        Trick (3) The very crucial thing is to change Brush everytime the robot moves through the map
+
+            # 1     Brush -> 3 (All the dust units will be set to 2, 1 or 0)
+            # 2     Brush -> 1 (All the dust units will be set to 1 or 0)
+            # 3     Brush -> 1 (All the dust units will be set to 0)
+
+******************************************************************************************************************
+                
+                
